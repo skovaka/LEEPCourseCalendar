@@ -33,8 +33,6 @@ Ext.define('Regleep.controller.CtLogin', {
 		
 	   dept.store.load();
 	   
-	   
-	   
 		dept.store.load({
 			scope: this,
 			callback: function(records, operation, success) {
@@ -43,14 +41,36 @@ Ext.define('Regleep.controller.CtLogin', {
 				console.log(count + " " + total);
 
 				if (count == 1) {
-					vwPanel.hide();
-					coursepanel.show();
 
 					var calendar = coursepanel.down('coursecalendar');
+					var subjectbox = coursepanel.down('textfield[itemId="subjectTxt"]');
+					var termbox = coursepanel.down('textfield[itemId="termTxt"]');
+					
+					var currentTerm = termbox.store.last().get('term');
+					termbox.setValue(currentTerm);
+					
 					calendar.store.proxy.extraParams.department = deptVal;
+					calendar.store.proxy.extraParams.term = currentTerm;
+					
+					subjectbox.store.proxy.extraParams.department = deptVal;
+					subjectbox.store.proxy.extraParams.term = currentTerm;
+					
 					calendar.store.load();
-
-
+					
+					subjectbox.store.load({
+						scope: this,
+						callback: function(records, operation, success) {
+							var vals = [];
+							for (var i = 0; i < records.length; i++) {
+								vals.push(records[i].get('subject'));
+							}
+							subjectbox.setValue(vals);
+						}
+					});
+					
+					
+					vwPanel.hide();
+					coursepanel.show();
 				} else {
 					alert ('Password incorrect!');
 					dept.store.proxy.extraParams.department = "";

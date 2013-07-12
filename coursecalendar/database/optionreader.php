@@ -9,6 +9,8 @@ $PARAMS = $_GET;
 //Start the PHP console
 PhpConsole::start();
 
+$SEMESTER_MAP = array('01' => 'Winter', '09' => 'Fall');
+
 //Connect to the database
 $connection = getCourseDatabase();
 
@@ -24,7 +26,12 @@ $id = 0;
 $options = array();
 if (mysql_num_rows($result) > 0) {
 	while($option = mysql_fetch_object($result)) {
-		//echo $course -> $PARAMS['fields'];		
+		
+		if ($PARAMS['fields'] == 'term') {
+			$formatted = $SEMESTER_MAP[substr($option -> term, 4)].' '.substr($option -> term, 0, 4);
+			$option -> term_format = $formatted;		
+		}
+		
 		$options[] = $option;
 	}
 }
@@ -82,35 +89,10 @@ function buildQuery() {
 				$query .= ")";
 			}
 		}
-	
-		echo $query."<br>";
 		
 		return $query;
 	}
 	return null;
-}
-
-//Returns what time block a course should be in
-function getBlock($course) {
-	global $BLOCK_TABLE;
-	
-	if (substr($course -> section, 0, 1) == "9" && strlen($course -> section) == 3)
-		return 6;
-	
-	$days = str_replace(" ", "", $course -> days);
-	$start = $course -> start;
-	$end = $course -> end;
-	$query = "SELECT block FROM $BLOCK_TABLE WHERE days = '$days' AND start = '$start' AND end = '$end'";
-	
-	$connection = getCourseDatabase();
-	$result = mysql_query($query, $connection);
-	mysql_close($connection);
-	
-	if ($r = mysql_fetch_object($result))
-		return $r -> block;
-		
-	return 5;
-	
 }
 
 ?>
