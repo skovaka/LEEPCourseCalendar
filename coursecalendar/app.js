@@ -7,7 +7,7 @@ Ext.application({
     appFolder: 'app',
     
     controllers: [
-        'CourseCalendar',
+        'CtCourseCalendar',
         'CtCourses',
         'CtLogin',
         'CtCourseListPanel',
