@@ -18,40 +18,48 @@ Ext.define('Regleep.controller.CtCourseListPanel', {
                 show: this.onShow
             },
             
-            'courselistpanel button[action=update]': {
-                click: this.updateCourses
-            },
-            
             'courselistpanel button[action=create]': {
                 click: this.createNewCourse
-            }
+            },
+            
+            'courselistpanel combobox': {
+				collapse: this.combochanged
+			},
+            
+            'courselistpanel textfield': {
+				change: this.textchanged
+			},
         });
     },
     
-    onShow: function (panel) {
-		
-		
-		console.log("Showing");
-	},
-    
     onRender: function (panel) {
 		panel.hide();
-		
-		
     },
     
-    updateCourses: function (button){
-       var vw = button.up('courselistpanel');
-       var facultyFilter = vw.down('textfield[itemId="facLastTxt"]');
-       var subjectFilter = vw.down('combobox[itemId="subjectTxt"]');
-       var termFilter = vw.down('combobox[itemId="termTxt"]');
-       var courselist = vw.down('coursecalendar');
-       courselist.store.proxy.extraParams.fac_last = facultyFilter.getValue();
+    onShow: function(panel) {
+		console.log("showing");
+		this.updateCourses(panel);
+	},
+    
+    combochanged: function(field) {
+		this.updateCourses(field.up('courselistpanel'));
+	},
+    
+    textchanged: function(field, oldVal, newVal) {
+		this.updateCourses(field.up('courselistpanel'));
+	},
+    
+    updateCourses: function (courseListPanel) {
+       var subjectFilter = courseListPanel.down('combobox[itemId="subjectField"]');
+       var termFilter = courseListPanel.down('combobox[itemId="termField"]');
+       var titleFilter = courseListPanel.down('textfield[itemId="titleField"]');
+       var facultyFilter = courseListPanel.down('textfield[itemId="facNameField"]');
+       var courselist = courseListPanel.down('coursecalendar');
+       courselist.store.proxy.extraParams.fac_name = facultyFilter.getValue();
+       courselist.store.proxy.extraParams.title = titleFilter.getValue();
        courselist.store.proxy.extraParams.subject = subjectFilter.getValue().join();
        courselist.store.proxy.extraParams.term = termFilter.getValue();
        courselist.store.load();
-       
-       console.log(subjectFilter.store.getGroups());
     },
     
     createNewCourse: function (button){

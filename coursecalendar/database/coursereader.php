@@ -28,7 +28,7 @@ $id = 0;
 $courses = array();
 if (mysql_num_rows($result) > 0) {
 	while($course = mysql_fetch_object($result)) {
-		//if ($course -> master != "MC") continue;
+		if ($course -> master != "MC") continue;
 		
 		//Add a random calender id to the course
 		$course -> cal_id = getBlock($course) + 1;
@@ -53,7 +53,7 @@ if (mysql_num_rows($result) > 0) {
 }
 
 //Encode the data and output it
-echo json_encode( array('success' => (count($courses) > 0), 'courses' => $courses) );
+echo json_encode( array('success' => true, 'courses' => $courses) );
 
 
 /*
@@ -90,16 +90,14 @@ function getCourseDate($day, $time) {
  * Builds a MySQL query for the courses table based on what's in PARAMS
  */
 function buildQuery() {
-	global $PARAMS;
-	global $COURSE_FIELDS;
-	global $TEST_TABLE;
+	global $PARAMS, $EXACT_FIELDS, $SEARCH_FIELDS, $TEST_TABLE;
 	
 	//The initial query
 	$query = "SELECT * FROM $TEST_TABLE";
 
 	//Add all the fields into the query
 	$first = True;
-	foreach ($COURSE_FIELDS as $key) {
+	foreach ($EXACT_FIELDS as $key) {
 		
 		//If the field has a requested value
 		if (array_key_exists($key, $PARAMS) && $PARAMS[$key] != "") {
@@ -129,6 +127,21 @@ function buildQuery() {
 				$i = $i + 1;
 			}
 			$query .= ")";
+		}
+	}
+	
+	foreach ($SEARCH_FIELDS as $key) {
+		if (array_key_exists($key, $PARAMS) && $PARAMS[$key] != "") {
+			$query .= " AND (";
+			
+			if ($key == 'fac_name') {
+				$query .= "CONCAT(fac_first, ' ', fac_last)";
+			} else {
+				$query .= $key;
+			}
+			
+			$query .= " LIKE '%".$PARAMS[$key]."%')";
+			
 		}
 	}
 	

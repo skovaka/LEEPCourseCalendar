@@ -11,7 +11,6 @@ Ext.define('Regleep.view.VwCourseListPanel' ,{
 	height: 615,
 	
 	initComponent: function() {
-		
         this.items = [
 			{
 				xtype: 'coursecalendar',
@@ -23,34 +22,42 @@ Ext.define('Regleep.view.VwCourseListPanel' ,{
 				xtype: 'panel',
 				layout: {
 					type: 'hbox',
-					padding: 5
 				},
+					
 				items: [{
+					itemId: 'subjectField',
 					xtype: 'combobox',
 					fieldLabel: 'Subject',
 					store: Ext.create('Regleep.store.StSubjectbox'),
 					displayField: 'subject',
-					itemId: 'subjectTxt',
 					multiSelect: true,
 					editable: false,
-					value: []
+					value: [],
+					padding: 5,
+					labelWidth: 45,
 				},{
-					itemId: 'facLastTxt',
+					itemId: 'titleField',
 					xtype: 'textfield',
-					fieldLabel: 'Last Name',
+					fieldLabel: 'Title',
+					padding: 5,
+					labelWidth: 0,
 				},{
+					itemId: 'facNameField',
+					xtype: 'textfield',
+					fieldLabel: 'Faculty Name',
+					padding: 5,
+					labelWidth: 80,
+				},{
+					itemId: 'termField',
 					xtype: 'combobox',
+					padding: 5,
+					labelWidth: 55,
 					fieldLabel: 'Semester',
-					itemId: 'termTxt',
 					store: Ext.create('Regleep.store.StTermbox'),
 					displayField: 'term_format',
 					valueField: 'term',
 					editable: false,
 					value: []
-				},{
-					action: 'update',
-					xtype: 'button',
-					text:'Update',
 				}]
 			},{
 				region: 'south',

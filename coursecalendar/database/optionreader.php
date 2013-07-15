@@ -45,7 +45,7 @@ echo json_encode( array('success' => (count($options) > 0), 'options' => $option
  */
 function buildQuery() {
 	global $PARAMS;
-	global $COURSE_FIELDS;
+	global $EXACT_FIELDS;
 	global $TEST_TABLE;
 	
 	//The initial query
@@ -57,7 +57,7 @@ function buildQuery() {
 
 		//Add all the fields into the query
 		$first = True;
-		foreach ($COURSE_FIELDS as $key) {
+		foreach ($EXACT_FIELDS as $key) {
 			
 			//If the field has a requested value
 			if (array_key_exists($key, $PARAMS) && $PARAMS[$key] != "") {

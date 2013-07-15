@@ -1,7 +1,7 @@
 Ext.define('Regleep.store.StEvent', {
     extend: 'Extensible.calendar.data.EventStore',
     
-	autoLoad: true,
+	autoLoad: false,
 	proxy: {
 		type: 'ajax',
 		api: {
@@ -20,10 +20,11 @@ Ext.define('Regleep.store.StEvent', {
 		
 		startParam: undefined,
 		extraParams: {                              
-			department: "MACS",                     
+			department: "NULL",     
+			term: "201309",                
 			subject: "",
-			fac_last: "",
-			term: "201309",
+			fac_name: "",
+			title: "",
 		}, 
 		
 		reader: {

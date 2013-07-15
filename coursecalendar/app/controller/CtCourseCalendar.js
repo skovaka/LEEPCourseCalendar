@@ -20,7 +20,6 @@ Ext.define('Regleep.controller.CtCourseCalendar', {
     
     calRender: function(calendar) {
 		calendar.setStartDate(new Date("2013-07-01T18:30:00-04:00"));
-		console.log("Calendar Rendered");
 	},
 	
 	calChanged: function(store, operation) {

@@ -38,24 +38,18 @@ Ext.define('Regleep.controller.CtLogin', {
 			callback: function(records, operation, success) {
 				count = dept.store.getCount();
 				total = dept.store.getTotalCount();
-				console.log(count + " " + total);
 
 				if (count == 1) {
 
 					var calendar = coursepanel.down('coursecalendar');
-					var subjectbox = coursepanel.down('textfield[itemId="subjectTxt"]');
-					var termbox = coursepanel.down('textfield[itemId="termTxt"]');
+					var subjectbox = coursepanel.down('combobox[itemId="subjectField"]');
+					var termbox = coursepanel.down('combobox[itemId="termField"]');
 					
-					var currentTerm = termbox.store.last().get('term');
-					termbox.setValue(currentTerm);
+					termbox.setValue(termbox.store.last().get('term'));
 					
 					calendar.store.proxy.extraParams.department = deptVal;
-					calendar.store.proxy.extraParams.term = currentTerm;
 					
 					subjectbox.store.proxy.extraParams.department = deptVal;
-					subjectbox.store.proxy.extraParams.term = currentTerm;
-					
-					calendar.store.load();
 					
 					subjectbox.store.load({
 						scope: this,
