@@ -56,7 +56,7 @@ Extensible.Config = {
          * 
          * @config {String} extJsRoot
          */
-        extJsRoot: 'http://cdn.sencha.io/ext-4.2.0-gpl/',
+        extJsRoot: 'http://localhost/ext-4/',
         
         /**
          * The root path to the Extensible framework (defaults to the current url of this script file,
@@ -71,7 +71,7 @@ Extensible.Config = {
          * 
          * @config {String} extensibleRoot
          */
-        extensibleRoot: null, // initialized dynamically in getSdkPath()
+        extensibleRoot: "http://localhost/extensible/", // initialized dynamically in getSdkPath()
         
         /**
          * True to allow the default browser behavior of caching the Extensible JS and CSS files

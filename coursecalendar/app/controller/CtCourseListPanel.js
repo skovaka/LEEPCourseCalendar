@@ -37,7 +37,6 @@ Ext.define('Regleep.controller.CtCourseListPanel', {
     },
     
     onShow: function(panel) {
-		console.log("showing");
 		this.updateCourses(panel);
 	},
     
