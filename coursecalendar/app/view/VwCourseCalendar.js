@@ -28,12 +28,13 @@ Ext.define('Regleep.view.VwCourseCalendar' ,{
 	//Set the stores
 	eventStore: Ext.create('Regleep.store.StEvent'),
     calendarStore: Ext.create('Regleep.store.StCalendar'),
+    
+    timeblockView: true,
 	
 	initComponent: function() {
 		
-		//Load the custom event mapping
-		Extensible.calendar.data.EventMappings = Ext.create('Regleep.data.DaCalendarMappings').mappings;
-		Extensible.calendar.data.EventModel.reconfigure();
+		
+		this.setTimeblockView(false);
 		
 		//Make the top bar only display the day of the week
 		Extensible.calendar.view.DayHeader.override({
@@ -45,21 +46,48 @@ Ext.define('Regleep.view.VwCourseCalendar' ,{
 				return params;
 			}
 		});
+		Extensible.calendar.data.EventMappings = Ext.create('Regleep.data.DaCalendarMappings').mappings;
 		
-		Extensible.calendar.view.DayBody.override({
-			getTemplateEventData : function(evt){
-				var data = this.callParent(arguments);
-				
-				var mappings = Extensible.calendar.data.EventMappings;
-				
-				data.Title = evt[mappings.Subject.name] 
-							 + ' ' + evt[mappings.CourseNumber.name] 
-							 + '-' + evt[mappings.Section.name];
-				
-				return data;
-			}
-		});
+		Extensible.calendar.form.EventWindow.override(Ext.create('Regleep.data.DaEditForm').formData);
         
         this.callParent(arguments);
     },
+    
+    setTimeblockView: function(tbView) {
+		
+		if (tbView != this.timeblockView) {
+			//Load the custom event mappings
+			if (tbView) {
+				Extensible.calendar.data.EventMappings = Ext.create('Regleep.data.DaTimeblockMappings').mappings;
+				this.eventStore.proxy.api.read = "database/timeblockreader.php";
+			} else {
+				Extensible.calendar.data.EventMappings = Ext.create('Regleep.data.DaCalendarMappings').mappings;
+				this.eventStore.proxy.api.read = "database/coursereader.php";
+			}
+			
+			Extensible.calendar.data.EventModel.reconfigure();
+				
+			Extensible.calendar.view.DayBody.override({
+				getTemplateEventData : function(evt){
+					var data = this.callParent(arguments);
+					
+					var mappings = Extensible.calendar.data.EventMappings;
+					
+					if (tbView) {
+						data.Title = "Block " + evt[mappings.Title.name] + " - " + evt[mappings.Days.name];
+					} else {
+						data.Title = evt[mappings.Subject.name] 
+									 + ' ' + evt[mappings.CourseNumber.name] 
+									 + '-' + evt[mappings.Section.name];
+					}
+					
+					return data;
+				}
+			});
+			
+			this.eventStore.load();
+			
+			this.timeblockView = tbView;
+		}
+	},
 });

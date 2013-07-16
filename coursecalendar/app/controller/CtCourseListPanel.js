@@ -62,7 +62,30 @@ Ext.define('Regleep.controller.CtCourseListPanel', {
     },
     
     createNewCourse: function (button){
-		var window = Ext.create('widget.newcourse', { width: 500});
-		window.show();
-    }
+		//var window = Ext.create('widget.newcourse', { width: 500});
+		//window.show();
+		Ext.MessageBox.show({
+            title: 'Choose timeblock type',
+            msg: 'Would you like to create your course in a standard or custom timeblock? <br> <b>Note: Custom timeblocks must be approved unless for lab or discussion.<b>',
+            buttons: Ext.MessageBox.YESNOCANCEL,
+            buttonText:{ 
+                yes: "Standard timeblock", 
+                no: "Custom timeblock"
+            },
+            
+            calendar: button.up('courselistpanel').down('coursecalendar'),
+            
+            fn: function (btn, text, opt) {
+				if (btn == "yes") {
+					opt.calendar.setTimeblockView(true);
+				} else if (btn == "no") {
+					var window = Ext.create('widget.newcourse', { width: 500});
+					window.show();
+				}
+			}
+        });
+    },
+    
+    showResult: function (btn) {
+    },
 });

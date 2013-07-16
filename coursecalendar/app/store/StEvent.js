@@ -5,10 +5,7 @@ Ext.define('Regleep.store.StEvent', {
 	proxy: {
 		type: 'ajax',
 		api: {
-			create  : "database/coursereader.php",
 			read    : "database/coursereader.php",
-			update  : "database/coursereader.php",
-			destroy  : "database/coursereader.php"
 		},
 		
 		actionMethods: {                            
