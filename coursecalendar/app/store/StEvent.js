@@ -8,11 +8,8 @@ Ext.define('Regleep.store.StEvent', {
 			read    : "database/coursereader.php",
 		},
 		
-		actionMethods: {                            
-			create: 'POST',                            
-			read: 'POST',                            
-			update: 'POST',                            
-			destroy: 'POST'                        
+		actionMethods: {                         
+			read: 'POST',                     
 		},
 		
 		startParam: undefined,

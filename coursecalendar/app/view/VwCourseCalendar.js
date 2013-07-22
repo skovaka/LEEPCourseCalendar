@@ -46,6 +46,7 @@ Ext.define('Regleep.view.VwCourseCalendar' ,{
 				return params;
 			}
 		});
+		
 		Extensible.calendar.data.EventMappings = Ext.create('Regleep.data.DaCalendarMappings').mappings;
 		
 		Extensible.calendar.form.EventWindow.override(Ext.create('Regleep.data.DaEditForm').formData);

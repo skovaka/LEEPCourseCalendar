@@ -65,21 +65,15 @@ Ext.define('Regleep.view.VwCourseListPanel' ,{
 				xtype: 'panel',
 				layout: {
 					type: 'hbox',
-					pack: 'center',
+					pack: 'left',
 					padding: 5
 				},
 				dock: 'bottom',
-				items: [{
-					itemId: 'percentage',
-					xtype: 'button',
-					text: 'Percentage Completion',
-					margin: "0 0 0 10"
-				},{
-					itemId: 'warnings',
-					xtype: 'button',
-					text: 'Warnings',
-					margin: "0 0 0 10"
-				},{
+				items: [
+				
+				Ext.create('Regleep.view.VwDistribution').display,
+				
+				{
 					action: 'create',
 					xtype: 'button',
 					text:'Create New Course',

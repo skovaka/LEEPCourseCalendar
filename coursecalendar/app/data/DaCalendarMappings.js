@@ -1,12 +1,14 @@
 Ext.define('Regleep.data.DaCalendarMappings', {
 	mappings: {
-		CalendarId:  {name: 'CalID', mapping: 'cal_id', type: 'int'},
+		CalendarId:  {name: 'CalID', mapping: 'block', type: 'int'},
 		Title:       {name: 'EvtTitle', mapping: 'title'},
 		StartDate:   {name: 'StartDt', mapping: 'cal_start', type: 'date', dateFormat: 'c'},
 		EndDate:     {name: 'EndDt', mapping: 'cal_end', type: 'date', dateFormat: 'c'},
 		Notes:       {name: 'Desc', mapping: 'notes'},
-		
 		EventId:     {name: 'ID', mapping:'id', type:'int'},
+		CourseID:    {name: 'CourseID', mapping:'course_id', type:'int'},
+		
+		Superblock:	 {name: 'Superblock', mapping: 'superblock'},
 		Term:		 {name: 'Term', mapping: 'term'},
 		TermPart:	 {name: 'TermPart', mapping: 'term_part'},
 		CRN:		 {name: 'CRN', mapping: 'crn'},

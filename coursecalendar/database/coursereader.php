@@ -31,8 +31,11 @@ if (mysql_num_rows($result) > 0) {
 		if ($course -> master != "MC") continue;
 		
 		//Add a random calender id to the course
-		$course -> cal_id = getBlock($course) + 1;
-		//$course -> cal_title = ($course -> subject).' '.($course -> number).' Sect '.($course -> section);
+		$block = getBlock($course);
+		$course -> block = $block['id'] + 1;
+		$course -> superblock = $block['superblock'];
+		
+		
 		
 		//Parse the day for the course
 		foreach (explode(' ', ($course -> days)) as $index => $day) {
@@ -41,6 +44,7 @@ if (mysql_num_rows($result) > 0) {
 				$courseday = clone $course;
 				$courseday -> cal_start = getCourseDate($day, $course -> start);
 				$courseday -> cal_end = getCourseDate($day, $course -> end);
+				$courseday -> course_id = $courseday -> id;
 				$courseday -> id = $id;
 				$id += 1;
 				
@@ -150,24 +154,25 @@ function buildQuery() {
 
 //Returns what time block a course should be in
 function getBlock($course) {
-	global $BLOCK_TABLE;
+	global $BLOCK_TABLE, $BLOCK_INFO_TABLE;
 	
 	if (substr($course -> section, 0, 1) == "9" && strlen($course -> section) == 3)
-		return 6;
+		return array('id' => 6, 'superblock' => 'E');
 	
 	$days = str_replace(" ", "", $course -> days);
 	$start = $course -> start;
 	$end = $course -> end;
-	$query = "SELECT block FROM $BLOCK_TABLE WHERE days = '$days' AND start = '$start' AND end = '$end'";
+	$query = "SELECT block, superblock FROM $BLOCK_TABLE, $BLOCK_INFO_TABLE WHERE $BLOCK_TABLE.block = $BLOCK_INFO_TABLE.id AND days = '$days' AND start = '$start' AND end = '$end'";
+	
 	
 	$connection = getCourseDatabase();
 	$result = mysql_query($query, $connection);
 	mysql_close($connection);
 	
 	if ($r = mysql_fetch_object($result))
-		return $r -> block;
+		return array('id' => ($r -> block), 'superblock' => ($r -> superblock));
 		
-	return 5;
+	return array('id' => 5, 'superblock' => 'D');
 	
 }
 
